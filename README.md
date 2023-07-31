@@ -1,2 +1,2 @@
-# birdy_bird
-# birdy_bird
+# birdy bird
+flappy birc clone in Bevy Game Engine
