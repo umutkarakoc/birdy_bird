@@ -10,6 +10,7 @@ bevy = {version = "*", features = ["dynamic_linking"]}
 bevy-inspector-egui = { version = "*", features = ["highlight_changes"] }
 bevy_easings = "*"
 rand = "*"
+bevy_rapier2d = { version = "*", features = [ "simd-stable", "debug-render-2d" ] }
 
 [profile.dev]
 opt-level = 1

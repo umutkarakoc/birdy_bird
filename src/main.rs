@@ -2,6 +2,7 @@ mod animaton;
 mod bird;
 mod cam;
 mod game;
+mod world;
 
 use bevy::{
     diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin},
@@ -17,6 +18,7 @@ use bevy::{
 };
 use bevy_easings::EasingsPlugin;
 use bevy_inspector_egui::quick::WorldInspectorPlugin;
+use bevy_rapier2d::prelude::*;
 use cam::{RetroCameraBundle, RetroCameraPlugin};
 
 #[derive(Clone, Eq, PartialEq, Debug, Hash, Default, States, SystemSet)]
@@ -38,19 +40,24 @@ fn main() {
                     present_mode: bevy::window::PresentMode::AutoVsync,
                     fit_canvas_to_parent: true,
                     prevent_default_event_handling: false,
-                    resolution: WindowResolution::new(1200., 715.),
+                    resolution: WindowResolution::new(1200., 716.),
                     ..default()
                 }),
                 ..default()
             })
             .set(RenderPlugin {
                 wgpu_settings: WgpuSettings {
-                    // backends: Some(Backends::GL),
+                    backends: Some(Backends::VULKAN),
                     ..default()
                 },
             }),
         LogDiagnosticsPlugin::default(),
-        FrameTimeDiagnosticsPlugin,
+        // FrameTimeDiagnosticsPlugin,
+        EasingsPlugin,
+        RetroCameraPlugin,
+        WorldInspectorPlugin::new().run_if(input_toggle_active(false, KeyCode::Escape)),
+        RapierPhysicsPlugin::<NoUserData>::pixels_per_meter(100.0),
+        RapierDebugRenderPlugin::default(),
     ))
     .insert_resource(TextSettings {
         allow_dynamic_font_size: true,
@@ -59,13 +66,10 @@ fn main() {
     .insert_resource(ClearColor(Color::rgb(0.0, 0.0, 0.0)))
     .add_state::<GameState>()
     .add_systems(Startup, (init,))
-    .add_plugins((
-        EasingsPlugin,
-        RetroCameraPlugin,
-        WorldInspectorPlugin::new().run_if(input_toggle_active(false, KeyCode::Escape)),
-    ))
+    .add_plugins(())
     .add_plugins((
         game::GamePlugin,
+        world::WorldPlugin,
         bird::BirdPlugin,
         animaton::AnimationPlugin,
     ));
@@ -74,7 +78,7 @@ fn main() {
 }
 
 fn init(mut commands: Commands) {
-    let mut cam = RetroCameraBundle::fixed_auto(1.0, 1200.0, 715.0);
+    let mut cam = RetroCameraBundle::fixed_auto(1.0, 1200.0, 716.0);
     // let mut cam = Camera2dBundle::default();
     cam.transform.translation.z = 100.;
     commands.spawn(cam);
