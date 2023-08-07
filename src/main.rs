@@ -2,23 +2,20 @@ mod animaton;
 mod bird;
 mod cam;
 mod game;
+mod obstacle;
 mod world;
 
 use bevy::{
-    diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin},
-    input::common_conditions::input_toggle_active,
+    // diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin},
+    // input::common_conditions::input_toggle_active,
     prelude::*,
-    render::{
-        settings::{Backends, WgpuSettings},
-        RenderPlugin,
-    },
+    render::{settings::WgpuSettings, RenderPlugin},
     text::TextSettings,
     window::{WindowPlugin, WindowResolution},
     DefaultPlugins,
 };
 use bevy_easings::EasingsPlugin;
-use bevy_inspector_egui::quick::WorldInspectorPlugin;
-use bevy_rapier2d::prelude::*;
+// use bevy_inspector_egui::quick::WorldInspectorPlugin;
 use cam::{RetroCameraBundle, RetroCameraPlugin};
 
 #[derive(Clone, Eq, PartialEq, Debug, Hash, Default, States, SystemSet)]
@@ -47,17 +44,15 @@ fn main() {
             })
             .set(RenderPlugin {
                 wgpu_settings: WgpuSettings {
-                    backends: Some(Backends::VULKAN),
+                    // backends: Some(Backends::VULKAN),
                     ..default()
                 },
             }),
-        LogDiagnosticsPlugin::default(),
+        // LogDiagnosticsPlugin::default(),
         // FrameTimeDiagnosticsPlugin,
         EasingsPlugin,
         RetroCameraPlugin,
-        WorldInspectorPlugin::new().run_if(input_toggle_active(false, KeyCode::Escape)),
-        RapierPhysicsPlugin::<NoUserData>::pixels_per_meter(100.0),
-        RapierDebugRenderPlugin::default(),
+        // WorldInspectorPlugin::new().run_if(input_toggle_active(false, KeyCode::Escape)),
     ))
     .insert_resource(TextSettings {
         allow_dynamic_font_size: true,
@@ -71,6 +66,7 @@ fn main() {
         game::GamePlugin,
         world::WorldPlugin,
         bird::BirdPlugin,
+        obstacle::ObstaclePlugin,
         animaton::AnimationPlugin,
     ));
 

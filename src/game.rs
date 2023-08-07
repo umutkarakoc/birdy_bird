@@ -26,9 +26,3 @@ fn start_game(keys: Res<Input<KeyCode>>, mut next_state: ResMut<NextState<GameSt
         next_state.set(GameState::Game);
     }
 }
-
-fn log_score(score: Res<Score>) {
-    if score.is_changed() {
-        println!("score: {}", score.0);
-    }
-}

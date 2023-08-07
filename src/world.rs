@@ -33,7 +33,7 @@ fn create_env(mut commands: Commands, asset_server: Res<AssetServer>) {
             level.spawn((
                 Name::new("sky1"),
                 Move(50.),
-                Reset(-800., 1200.),
+                Reset(-1200., 1200.),
                 SpriteBundle {
                     texture: asset_server.load("sky.png"),
                     transform: Transform::from_xyz(-400.0, 0.0, 0.0),
@@ -47,7 +47,7 @@ fn create_env(mut commands: Commands, asset_server: Res<AssetServer>) {
             level.spawn((
                 Name::new("sky"),
                 Move(50.),
-                Reset(-800., 1200.),
+                Reset(-1200., 1200.),
                 SpriteBundle {
                     texture: asset_server.load("sky.png"),
                     transform: Transform::from_xyz(0.0, 0.0, 0.0),
@@ -61,7 +61,7 @@ fn create_env(mut commands: Commands, asset_server: Res<AssetServer>) {
             level.spawn((
                 Name::new("sky"),
                 Move(50.),
-                Reset(-800., 1200.),
+                Reset(-1200., 1200.),
                 SpriteBundle {
                     texture: asset_server.load("sky.png"),
                     transform: Transform::from_xyz(400.0, 0.0, 0.0),
@@ -75,7 +75,7 @@ fn create_env(mut commands: Commands, asset_server: Res<AssetServer>) {
             level.spawn((
                 Name::new("sky"),
                 Move(50.),
-                Reset(-800., 1200.),
+                Reset(-1200., 1200.),
                 SpriteBundle {
                     texture: asset_server.load("sky.png"),
                     transform: Transform::from_xyz(800.0, 0.0, 0.0),
@@ -89,10 +89,24 @@ fn create_env(mut commands: Commands, asset_server: Res<AssetServer>) {
             level.spawn((
                 Name::new("sky"),
                 Move(50.),
-                Reset(-800., 1200.),
+                Reset(-1200., 1200.),
                 SpriteBundle {
                     texture: asset_server.load("sky.png"),
                     transform: Transform::from_xyz(1200.0, 0.0, 0.0),
+                    sprite: Sprite {
+                        anchor: Anchor::Center,
+                        ..default()
+                    },
+                    ..default()
+                },
+            ));
+            level.spawn((
+                Name::new("sky"),
+                Move(50.),
+                Reset(-1200., 1200.),
+                SpriteBundle {
+                    texture: asset_server.load("sky.png"),
+                    transform: Transform::from_xyz(1600.0, 0.0, 0.0),
                     sprite: Sprite {
                         anchor: Anchor::Center,
                         ..default()
@@ -114,7 +128,7 @@ fn create_env(mut commands: Commands, asset_server: Res<AssetServer>) {
             level.spawn((
                 Name::new("ground1"),
                 Move(300.),
-                Reset(-800., 1200.),
+                Reset(-1200., 1200.),
                 SpriteBundle {
                     texture: asset_server.load("ground.png"),
                     transform: Transform::from_xyz(-400.0, 0.0, 0.0),
@@ -128,7 +142,7 @@ fn create_env(mut commands: Commands, asset_server: Res<AssetServer>) {
             level.spawn((
                 Name::new("ground1"),
                 Move(300.),
-                Reset(-800., 1200.),
+                Reset(-1200., 1200.),
                 SpriteBundle {
                     texture: asset_server.load("ground.png"),
                     transform: Transform::from_xyz(0.0, 0.0, 0.0),
@@ -142,7 +156,7 @@ fn create_env(mut commands: Commands, asset_server: Res<AssetServer>) {
             level.spawn((
                 Name::new("groun2"),
                 Move(300.),
-                Reset(-800., 1200.),
+                Reset(-1200., 1200.),
                 SpriteBundle {
                     texture: asset_server.load("ground.png"),
                     transform: Transform::from_xyz(400.0, 0.0, 0.0),
@@ -156,7 +170,7 @@ fn create_env(mut commands: Commands, asset_server: Res<AssetServer>) {
             level.spawn((
                 Name::new("groun3"),
                 Move(300.),
-                Reset(-800., 1200.),
+                Reset(-1200., 1200.),
                 SpriteBundle {
                     texture: asset_server.load("ground.png"),
                     transform: Transform::from_xyz(800.0, 0.0, 0.0),
@@ -170,10 +184,24 @@ fn create_env(mut commands: Commands, asset_server: Res<AssetServer>) {
             level.spawn((
                 Name::new("ground4"),
                 Move(300.),
-                Reset(-800., 1200.),
+                Reset(-1200., 1200.),
                 SpriteBundle {
                     texture: asset_server.load("ground.png"),
                     transform: Transform::from_xyz(1200.0, 0.0, 0.0),
+                    sprite: Sprite {
+                        anchor: Anchor::TopCenter,
+                        ..default()
+                    },
+                    ..default()
+                },
+            ));
+            level.spawn((
+                Name::new("ground4"),
+                Move(300.),
+                Reset(-1200., 1200.),
+                SpriteBundle {
+                    texture: asset_server.load("ground.png"),
+                    transform: Transform::from_xyz(1600.0, 0.0, 0.0),
                     sprite: Sprite {
                         anchor: Anchor::TopCenter,
                         ..default()
