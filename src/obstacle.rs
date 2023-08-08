@@ -11,12 +11,18 @@ pub struct Level;
 impl Plugin for ObstaclePlugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(SpawnTimer(Timer::from_seconds(0., TimerMode::Repeating)))
-            .add_systems(Update, (spawner, slide).in_set(GameState::Game));
+            .add_systems(Update, (spawner, slide).run_if(in_state(GameState::Game)));
     }
 }
 
 #[derive(Component)]
 pub struct Obstacle;
+
+#[derive(Component)]
+pub struct ScoreZone;
+
+#[derive(Component)]
+pub struct Move;
 
 #[derive(Resource)]
 pub struct SpawnTimer(Timer);
@@ -37,8 +43,9 @@ fn spawner(
         let r = r * 300.;
 
         commands.spawn((
-            Name::new("obstactle"),
+            Name::new("obstacle"),
             Obstacle,
+            Move,
             SpriteBundle {
                 texture: texture.clone(),
                 transform: Transform::from_xyz(700., 520. - r, 1.),
@@ -46,8 +53,9 @@ fn spawner(
             },
         ));
         commands.spawn((
-            Name::new("obstactle"),
+            Name::new("obstacle"),
             Obstacle,
+            Move,
             SpriteBundle {
                 texture: texture.clone(),
                 sprite: Sprite {
@@ -58,15 +66,25 @@ fn spawner(
                 ..default()
             },
         ));
+        commands.spawn((
+            Name::new("Score Zone"),
+            ScoreZone,
+            Move,
+            Transform::from_xyz(800., 0., 5.),
+        ));
     }
 }
 
 fn slide(
     mut commands: Commands,
-    mut obstacles: Query<(Entity, &mut Transform), With<Obstacle>>,
+    mut obstacles: Query<(Entity, &mut Transform), With<Move>>,
     time: Res<Time>,
 ) {
     for (entity, mut t) in obstacles.iter_mut() {
         t.translation.x -= 300. * time.delta_seconds();
+
+        if t.translation.x < -800. {
+            commands.entity(entity).despawn();
+        }
     }
 }

@@ -2,7 +2,10 @@ use std::rc::Rc;
 
 use bevy::{prelude::*, sprite::Anchor};
 
-use crate::GameState;
+use crate::{
+    bird::{Bird, Dead},
+    GameState,
+};
 
 pub struct WorldPlugin;
 
@@ -15,7 +18,8 @@ pub struct Reset(f32, f32);
 impl Plugin for WorldPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Startup, create_env)
-            .add_systems(Update, move_items);
+            .add_systems(Update, move_items.run_if(in_state(GameState::MainMenu)))
+            .add_systems(Update, move_items.run_if(in_state(GameState::Game)));
     }
 }
 
@@ -212,7 +216,15 @@ fn create_env(mut commands: Commands, asset_server: Res<AssetServer>) {
         });
 }
 
-fn move_items(mut items: Query<(&mut Transform, &Move, &Reset)>, time: Res<Time>) {
+fn move_items(
+    mut items: Query<(&mut Transform, &Move, &Reset)>,
+    time: Res<Time>,
+
+    mut bird: Query<(&Bird, &Dead)>,
+) {
+    if !bird.is_empty() {
+        return;
+    }
     let dt = time.delta_seconds();
     for (mut t, Move(speed), Reset(reset_at, reset_to)) in items.iter_mut() {
         let d = speed * dt;

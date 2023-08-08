@@ -3,6 +3,7 @@ mod bird;
 mod cam;
 mod game;
 mod obstacle;
+mod ui;
 mod world;
 
 use bevy::{
@@ -68,6 +69,7 @@ fn main() {
         bird::BirdPlugin,
         obstacle::ObstaclePlugin,
         animaton::AnimationPlugin,
+        ui::UIPlugin,
     ));
 
     app.run();

@@ -17,6 +17,12 @@ pub struct AnimationIndex {
     pub end: usize,
 }
 
+#[derive(Component)]
+pub struct NoRepeat;
+
+#[derive(Component)]
+pub struct Ended;
+
 impl AnimationIndex {
     pub fn new(start: usize, end: usize) -> AnimationIndex {
         AnimationIndex { start, end }
@@ -48,19 +54,27 @@ impl Plugin for AnimationPlugin {
 fn animate(
     time: Res<Time>,
     mut query: Query<(
+        Entity,
         &AnimationIndex,
         &mut AnimationTimer,
         &mut TextureAtlasSprite,
+        Option<&NoRepeat>,
     )>,
+    mut commands: Commands,
 ) {
-    for (indices, mut timer, mut sprite) in &mut query {
+    for (entity, indices, mut timer, mut sprite, norepeat) in &mut query {
         timer.tick(time.delta());
         if timer.just_finished() {
-            sprite.index = if sprite.index == indices.end {
-                indices.start
-            } else {
-                sprite.index + 1
-            };
+            let mut next = sprite.index + 1;
+
+            if next == indices.end && norepeat.is_some() {
+                commands.entity(entity).insert(Ended);
+                return;
+            }
+            if next > indices.end {
+                next = 0;
+            }
+            sprite.index = next;
         }
     }
 }
