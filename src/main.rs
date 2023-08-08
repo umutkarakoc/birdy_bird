@@ -34,7 +34,7 @@ fn main() {
             .set(ImagePlugin::default_nearest())
             .set(WindowPlugin {
                 primary_window: Some(Window {
-                    title: "Wizard Castle".into(),
+                    title: "Birdy Bird".into(),
                     present_mode: bevy::window::PresentMode::AutoVsync,
                     fit_canvas_to_parent: true,
                     prevent_default_event_handling: false,
