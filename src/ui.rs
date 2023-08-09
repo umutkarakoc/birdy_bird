@@ -21,44 +21,51 @@ impl Plugin for UIPlugin {
 }
 
 fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
-    let mut ui = commands.spawn((
-        Name::new("UI"),
-        NodeBundle {
+    commands.spawn((
+        ScoreUI,
+        TextBundle::from_section(
+            "Score: 0",
+            TextStyle {
+                font_size: 50.0,
+                color: Color::WHITE,
+                ..default()
+            },
+        )
+        .with_text_alignment(TextAlignment::Center)
+        .with_style(Style {
+            position_type: PositionType::Absolute,
+            left: Val::Percent(2.),
+            top: Val::Percent(2.),
+            align_content: AlignContent::Center,
+            ..default()
+        }),
+    ));
+    commands
+        .spawn(NodeBundle {
             style: Style {
-                // i_size: Size::all(Val::Percent(100.)),
-                width: Val::Percent(100.),
-                height: Val::Percent(100.),
-                display: Display::Flex,
-                justify_content: JustifyContent::Center,
-                align_items: AlignItems::Center,
                 position_type: PositionType::Absolute,
+                height: Val::Vh(100.),
+                width: Val::Vw(100.),
+                flex_direction: FlexDirection::Column,
+                align_items: AlignItems::Center,
+                justify_content: JustifyContent::Center,
                 ..default()
             },
             ..default()
-        },
-    ));
-
-    ui.with_children(|ui| {
-        let mut canvas = ui.spawn((
-            Name::new("canvas"),
-            NodeBundle {
-                style: Style {
-                    display: Display::Flex,
-                    width: Val::Px(1200.),
-                    height: Val::Px(716.),
-                    justify_content: JustifyContent::Center,
-                    align_items: AlignItems::Center,
+        })
+        .with_children(|menu| {
+            menu.spawn((
+                PlayButton,
+                Menu,
+                ImageBundle {
+                    image: UiImage::new(asset_server.load("play.png")),
                     ..default()
                 },
-                ..default()
-            },
-        ));
-
-        canvas.with_children(|c| {
-            c.spawn((
-                ScoreUI,
+            ));
+            menu.spawn((
+                Menu,
                 TextBundle::from_section(
-                    "Score: 0",
+                    "Press Space Key to Play",
                     TextStyle {
                         font_size: 50.0,
                         color: Color::WHITE,
@@ -67,60 +74,16 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
                 )
                 .with_text_alignment(TextAlignment::Center)
                 .with_style(Style {
-                    position_type: PositionType::Absolute,
-                    left: Val::Percent(2.),
-                    top: Val::Percent(2.),
-                    align_content: AlignContent::Center,
+                    left: Val::Percent(0.),
+                    top: Val::Percent(0.),
+                    margin: UiRect {
+                        top: Val::Percent(2.),
+                        ..default()
+                    },
                     ..default()
                 }),
             ));
-            c.spawn(NodeBundle {
-                style: Style {
-                    align_items: AlignItems::Center,
-                    flex_direction: FlexDirection::Column,
-                    justify_content: JustifyContent::Center,
-                    ..default()
-                },
-                ..default()
-            })
-            .with_children(|menu| {
-                menu.spawn((
-                    PlayButton,
-                    Menu,
-                    ImageBundle {
-                        image: UiImage::new(asset_server.load("play.png")),
-                        style: Style {
-                            left: Val::Percent(0.),
-                            top: Val::Percent(0.),
-
-                            ..default()
-                        },
-                        ..default()
-                    },
-                ));
-                menu.spawn((
-                    Menu,
-                    TextBundle::from_section(
-                        "Press Space Key to Play",
-                        TextStyle {
-                            font_size: 50.0,
-                            color: Color::WHITE,
-                            ..default()
-                        },
-                    )
-                    .with_text_alignment(TextAlignment::Center)
-                    .with_style(Style {
-                        margin: UiRect {
-                            top: Val::Percent(2.),
-                            ..default()
-                        },
-                        align_content: AlignContent::Center,
-                        ..default()
-                    }),
-                ));
-            });
         });
-    });
 }
 
 fn update_score(score: Res<Score>, mut ui: Query<&mut Text, With<ScoreUI>>) {

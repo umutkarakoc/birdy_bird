@@ -1,6 +1,5 @@
 mod animaton;
 mod bird;
-mod cam;
 mod game;
 mod obstacle;
 mod ui;
@@ -10,14 +9,16 @@ use bevy::{
     // diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin},
     // input::common_conditions::input_toggle_active,
     prelude::*,
-    render::{camera::ScalingMode, settings::WgpuSettings, RenderPlugin},
+    render::{
+        camera::{ScalingMode, Viewport},
+        settings::WgpuSettings,
+        RenderPlugin,
+    },
     text::TextSettings,
-    window::{WindowPlugin, WindowResolution},
+    window::{WindowPlugin, WindowResized, WindowResolution},
     DefaultPlugins,
 };
-use bevy_easings::EasingsPlugin;
 // use bevy_inspector_egui::quick::WorldInspectorPlugin;
-use cam::{RetroCameraBundle, RetroCameraPlugin};
 
 #[derive(Clone, Eq, PartialEq, Debug, Hash, Default, States, SystemSet)]
 pub enum GameState {
@@ -51,8 +52,6 @@ fn main() {
             }),
         // LogDiagnosticsPlugin::default(),
         // FrameTimeDiagnosticsPlugin,
-        EasingsPlugin,
-        RetroCameraPlugin,
         // WorldInspectorPlugin::new().run_if(input_toggle_active(false, KeyCode::Escape)),
     ))
     .insert_resource(TextSettings {
@@ -61,8 +60,7 @@ fn main() {
     })
     .insert_resource(ClearColor(Color::rgb(0.0, 0.0, 0.0)))
     .add_state::<GameState>()
-    .add_systems(Startup, (init,))
-    .add_plugins(())
+    .add_systems(Startup, init)
     .add_plugins((
         game::GamePlugin,
         world::WorldPlugin,
@@ -71,20 +69,16 @@ fn main() {
         animaton::AnimationPlugin,
         ui::UIPlugin,
     ));
-
     app.run();
 }
 
 fn init(mut commands: Commands) {
     commands.spawn(Camera2dBundle {
-        transform: Transform::from_xyz(0., 0., 100.),
+        transform: Transform::from_xyz(0.0, 0.0, 100.),
         projection: OrthographicProjection {
-            scale: 1.,
-
             scaling_mode: ScalingMode::FixedVertical(716.),
-
-            ..Default::default()
+            ..default()
         },
-        ..Default::default()
+        ..default()
     });
 }
