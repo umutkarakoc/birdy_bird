@@ -21,12 +21,28 @@ impl Plugin for UIPlugin {
 }
 
 fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
-    commands
-        .spawn((
-            Name::new("UI"),
+    let mut ui = commands.spawn((
+        Name::new("UI"),
+        NodeBundle {
+            style: Style {
+                // i_size: Size::all(Val::Percent(100.)),
+                width: Val::Percent(100.),
+                height: Val::Percent(100.),
+                display: Display::Flex,
+                justify_content: JustifyContent::Center,
+                align_items: AlignItems::Center,
+                position_type: PositionType::Absolute,
+                ..default()
+            },
+            ..default()
+        },
+    ));
+
+    ui.with_children(|ui| {
+        let mut canvas = ui.spawn((
+            Name::new("canvas"),
             NodeBundle {
                 style: Style {
-                    // i_size: Size::all(Val::Percent(100.)),
                     display: Display::Flex,
                     width: Val::Px(1200.),
                     height: Val::Px(716.),
@@ -36,9 +52,10 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
                 },
                 ..default()
             },
-        ))
-        .with_children(|ui| {
-            ui.spawn((
+        ));
+
+        canvas.with_children(|c| {
+            c.spawn((
                 ScoreUI,
                 TextBundle::from_section(
                     "Score: 0",
@@ -57,7 +74,7 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
                     ..default()
                 }),
             ));
-            ui.spawn(NodeBundle {
+            c.spawn(NodeBundle {
                 style: Style {
                     align_items: AlignItems::Center,
                     flex_direction: FlexDirection::Column,
@@ -103,6 +120,7 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
                 ));
             });
         });
+    });
 }
 
 fn update_score(score: Res<Score>, mut ui: Query<&mut Text, With<ScoreUI>>) {

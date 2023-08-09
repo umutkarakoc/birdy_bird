@@ -10,7 +10,7 @@ use bevy::{
     // diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin},
     // input::common_conditions::input_toggle_active,
     prelude::*,
-    render::{settings::WgpuSettings, RenderPlugin},
+    render::{camera::ScalingMode, settings::WgpuSettings, RenderPlugin},
     text::TextSettings,
     window::{WindowPlugin, WindowResolution},
     DefaultPlugins,
@@ -76,8 +76,15 @@ fn main() {
 }
 
 fn init(mut commands: Commands) {
-    let mut cam = RetroCameraBundle::fixed_auto(1.0, 1200.0, 716.0);
-    // let mut cam = Camera2dBundle::default();
-    cam.transform.translation.z = 100.;
-    commands.spawn(cam);
+    commands.spawn(Camera2dBundle {
+        transform: Transform::from_xyz(0., 0., 100.),
+        projection: OrthographicProjection {
+            scale: 1.,
+
+            scaling_mode: ScalingMode::FixedVertical(716.),
+
+            ..Default::default()
+        },
+        ..Default::default()
+    });
 }
