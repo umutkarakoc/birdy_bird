@@ -1,2 +1,4 @@
 # birdy bird
-flappy birc clone in Bevy Game Engine
+flappy bird clone in Bevy Game Engine
+
+play at https://peakrio.itch.io/birdy-bird
