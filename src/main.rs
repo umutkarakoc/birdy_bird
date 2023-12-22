@@ -11,11 +11,11 @@ use bevy::{
     prelude::*,
     render::{
         camera::{ScalingMode, Viewport},
-        settings::WgpuSettings,
+        settings::{Backends, WgpuSettings},
         RenderPlugin,
     },
     text::TextSettings,
-    window::{WindowPlugin, WindowResized, WindowResolution},
+    window::{WindowMode, WindowPlugin, WindowResized, WindowResolution},
     DefaultPlugins,
 };
 // use bevy_inspector_egui::quick::WorldInspectorPlugin;
@@ -40,15 +40,13 @@ fn main() {
                     fit_canvas_to_parent: true,
                     prevent_default_event_handling: false,
                     resolution: WindowResolution::new(1200., 716.),
+                    mode: WindowMode::Windowed,
                     ..default()
                 }),
                 ..default()
             })
             .set(RenderPlugin {
-                wgpu_settings: WgpuSettings {
-                    // backends: Some(Backends::VULKAN),
-                    ..default()
-                },
+                wgpu_settings: WgpuSettings { ..default() },
             }),
         // LogDiagnosticsPlugin::default(),
         // FrameTimeDiagnosticsPlugin,
