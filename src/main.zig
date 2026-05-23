@@ -30,8 +30,9 @@ const Game = struct {
     // Bird
     bird_w: f32 = 216,
     bird_h: f32 = 150,
-    gravity: f32 = 10.0,
-    jump_force: f32 = 100.0,
+    bird_force: f32 = -400,
+    jump_force: f32 = -400.0,
+    gravity: f32 = 600.0,
     move_speed: f32 = 100.0,
     bird_anim_index: u16 = 0,
     bird_anim_time: f32 = 0,
@@ -57,7 +58,9 @@ const Game = struct {
         game.update_bg();
         game.update_bird();
         if (!game.is_started) {
-            return;
+            if (rl.isKeyReleased(rl.KeyboardKey.space)) {
+                game.is_started = true;
+            }
         }
     }
 
@@ -74,6 +77,16 @@ const Game = struct {
             game.bird_anim_time = 0.0;
         }
         game.bird_anim_index = @intFromFloat(game.bird_anim_time * 20.0);
+
+        if (!game.is_started) {
+            return;
+        }
+
+        game.bird_force += game.gravity * game.dt;
+        if(rl.isKeyPressed(rl.KeyboardKey.space)) {
+            game.bird_force = game.jump_force;
+        }
+        game.bird_pos.y += game.bird_force * game.dt;
     }
 
     pub fn draw(game: Game) void {
