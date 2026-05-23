@@ -2,13 +2,19 @@ const rl = @import("raylib");
 
 const sw = 1920;
 const sh = 1080;
+
 pub fn main() void {
     rl.initWindow(sw, sh, "Birdy bird");
     defer rl.closeWindow();
 
     while (!rl.windowShouldClose()) {
+        update();
         draw();
     }
+}
+
+pub fn update() void {
+    
 }
 
 pub fn draw() void {

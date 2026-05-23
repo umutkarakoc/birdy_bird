@@ -2,5 +2,6 @@
 zig-cache/
 zig-out/
 
-# raylib-zig'in çektiği bağımlılık klasörü
 zig-pkg
+
+.DS_Store
