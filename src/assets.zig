@@ -8,7 +8,7 @@ pub const Sprites = struct {
     bg: rl.Texture2D,
     play: rl.Texture2D,
 
-    fn load() !Sprites {
+    pub fn load() !Sprites {
         var bird: [20]rl.Texture2D = undefined;
 
         for (&bird, 0..) |*tex, i| {
@@ -18,7 +18,7 @@ pub const Sprites = struct {
                 "assets/bird/{d:0>2}.png",
                 .{i},
             ) catch unreachable;
-            tex.* = rl.loadTexture(path);
+            tex.* = try rl.loadTexture(path);
         }
 
         var dead: [20]rl.Texture2D = undefined;
@@ -29,15 +29,15 @@ pub const Sprites = struct {
                 "assets/dead/{d:0>2}.png",
                 .{i},
             ) catch unreachable;
-            tex.* = rl.loadTexture(path);
+            tex.* = try rl.loadTexture(path);
         }
 
         return .{
             .bird = bird,
             .dead = dead,
             .bg = try rl.loadTexture("assets/bg.png"),
-            .play = try rl.loadTexture("assets/play .png"),
-            .obstacle = try rl.loadTexture("assets/obstacle .png"),
+            .play = try rl.loadTexture("assets/play.png"),
+            .obstacle = try rl.loadTexture("assets/obstacle.png"),
         };
     }
 
