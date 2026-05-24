@@ -4,7 +4,8 @@ const rl = @import("raylib");
 pub const Sprites = struct {
     bird: [20]rl.Texture2D,
     dead: [20]rl.Texture2D,
-    obstacle: rl.Texture2D,
+    obstacle_top: rl.Texture2D,
+    obstacle_bottom: rl.Texture2D,
     bg: rl.Texture2D,
     play: rl.Texture2D,
 
@@ -37,7 +38,8 @@ pub const Sprites = struct {
             .dead = dead,
             .bg = try rl.loadTexture("assets/bg.png"),
             .play = try rl.loadTexture("assets/play.png"),
-            .obstacle = try rl.loadTexture("assets/obstacle.png"),
+            .obstacle_top = try rl.loadTexture("assets/obstacle_top.png"),
+            .obstacle_bottom = try rl.loadTexture("assets/obstacle_bottom.png"),
         };
     }
 
@@ -50,6 +52,7 @@ pub const Sprites = struct {
         }
         rl.unloadTexture(self.bg);
         rl.unloadTexture(self.play);
-        rl.unloadTexture(self.obstacle);
+        rl.unloadTexture(self.obstacle_top);
+        rl.unloadTexture(self.obstacle_bottom);
     }
 };
