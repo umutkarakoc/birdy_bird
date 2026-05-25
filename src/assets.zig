@@ -14,10 +14,11 @@ pub const Sprites = struct {
 
         for (&bird, 0..) |*tex, i| {
             var buf: [64]u8 = undefined;
-            const path = std.fmt.bufPrintZ(
+            const path = std.fmt.bufPrintSentinel(
                 &buf,
                 "assets/bird/{d:0>2}.png",
                 .{i},
+                0,
             ) catch unreachable;
             tex.* = try rl.loadTexture(path);
         }
@@ -25,10 +26,11 @@ pub const Sprites = struct {
         var dead: [20]rl.Texture2D = undefined;
         for (&dead, 0..) |*tex, i| {
             var buf: [64]u8 = undefined;
-            const path = std.fmt.bufPrintZ(
+            const path = std.fmt.bufPrintSentinel(
                 &buf,
                 "assets/dead/{d:0>2}.png",
                 .{i},
+                0,
             ) catch unreachable;
             tex.* = try rl.loadTexture(path);
         }

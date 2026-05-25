@@ -97,6 +97,9 @@ const Game = struct {
         }
         game.bird_anim_index = @intFromFloat(game.bird_anim_time * 20.0);
 
+        if (game.state == .Idle) {
+            return;
+        }
         game.bird_force += game.gravity * game.dt;
 
         if (rl.isKeyPressed(rl.KeyboardKey.space) and game.state == .Play) {
